@@ -6,6 +6,7 @@ import sys
 import time
 import json
 import logging
+import itertools
 import configparser
 import concurrent.futures
 
@@ -141,10 +142,14 @@ class CoinPriceAPI:
 
     YAHOO_MKTS = {'USD_CNY': 'USDCNY', 'JPY_CNY': 'JPYCNY'}
 
+    match = {x.replace('_', ''): x for x in itertools.chain(
+             POLONIEX_MKTS, COINBASE_MKTS, BTCCHINA_MKTS, YAHOO_MKTS)}
+
     def __init__(self, ttl=60):
         self.ttl = ttl
         self._last_update = {}
         self._price = {}
+        self.source = {}
         self.executor = concurrent.futures.ThreadPoolExecutor(max_workers=5)
 
     def update_poloniex(self):
@@ -158,6 +163,7 @@ class CoinPriceAPI:
                 continue
             self._last_update[pair] = update
             self._price[pair] = v['last']
+            self.source[pair] = 'https://poloniex.com/exchange#' + k.lower()
 
     def update_coinbase(self):
         req = HSession.get('https://api.coinbase.com/v2/exchange-rates?currency=BTC', timeout=30)
@@ -171,6 +177,7 @@ class CoinPriceAPI:
                 continue
             self._last_update[pair] = update
             self._price[pair] = v
+            self.source[pair] = 'https://www.coinbase.com/charts'
 
     def update_btcchina(self):
         req = HSession.get('https://data.btcchina.com/data/ticker?market=all', timeout=30)
@@ -181,6 +188,7 @@ class CoinPriceAPI:
             v = ret[k]
             self._last_update[pair] = v['date']
             self._price[pair] = v['last']
+            self.source[pair] = 'https://spot.btcc.com/'
 
     def update_yahoo(self, key, symbol):
         req = HSession.get('http://download.finance.yahoo.com/d/quotes.csv?e=.csv&f=l1&s=%s=X' % symbol, timeout=30)
@@ -188,6 +196,7 @@ class CoinPriceAPI:
         ret = req.text.strip()
         self._last_update[key] = time.time()
         self._price[key] = ret
+        self.source[key] = 'http://finance.yahoo.com/quote/%s=X' % symbol
 
     def __getitem__(self, key):
         if time.time() - self._last_update.get(key, 0) < self.ttl:
@@ -221,7 +230,7 @@ def message_handler(cli, msg):
     cmd, expr = cli.parse_cmd(msg.get('text', ''))
     if not cmd:
         return
-    elif cmd == 'query':
+    elif cmd == 'query' and not expr:
         price = price_api.getmany((
             'BTC_USD', 'BTC_CNY', 'LTC_BTC', 'LTC_CNY',
             'USD_CNY', 'JPY_CNY', 'ZEC_BTC', 'XMR_BTC'))
@@ -234,8 +243,20 @@ def message_handler(cli, msg):
             price['XMR_BTC'],
             float(price['XMR_BTC']) * float(price['BTC_USD'])
         )
-        cli.sendMessage(chat_id=msg['chat']['id'], text=text, parse_mode='Markdown')
+        cli.sendMessage(chat_id=msg['chat']['id'], text=text,
+                        parse_mode='Markdown', disable_web_page_preview=True)
         logging.info('query: ' + re_mdlink.sub(r'\1', text.replace('\n', ' ')))
+    elif cmd == 'query':
+        try:
+            key = expr.strip().upper()
+            if '_' not in key:
+                key = price_api.match[key]
+            price = price_api[key]
+            cli.sendMessage(chat_id=msg['chat']['id'], text="[%s](%s)=%s" % (
+                expr, price_api.source[key], price
+            ), parse_mode='Markdown', disable_web_page_preview=True)
+        except KeyError:
+            cli.sendMessage(chat_id=msg['chat']['id'], text="We don't have data source for %s. The format is A_B, such as BTC_USD." % expr)
     elif cmd == 'start':
         return
 
