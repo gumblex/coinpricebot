@@ -256,7 +256,7 @@ def message_handler(cli, msg):
                 expr, price_api.source[key], price
             ), parse_mode='Markdown', disable_web_page_preview=True)
         except KeyError:
-            cli.sendMessage(chat_id=msg['chat']['id'], text="We don't have data source for %s. The format is A_B, such as BTC_USD." % expr)
+            cli.sendMessage(chat_id=msg['chat']['id'], text="We don't have data source for %s." % expr)
     elif cmd == 'start':
         return
 
