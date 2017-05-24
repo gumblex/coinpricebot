@@ -227,22 +227,27 @@ text_template = '''[BTCUSD](https://www.coinbase.com/charts)=%s [BTCCNY](https:/
 price_api = CoinPriceAPI(60)
 
 def message_handler(cli, msg):
-    cmd, expr = cli.parse_cmd(msg.get('text', ''))
+    msgtext = msg.get('text', '')
+    cmd, expr = cli.parse_cmd(msgtext)
     if not cmd:
         return
     elif cmd == 'query' and not expr:
-        price = price_api.getmany((
-            'BTC_USD', 'BTC_CNY', 'LTC_BTC', 'LTC_CNY',
-            'USD_CNY', 'JPY_CNY', 'ZEC_BTC', 'XMR_BTC'))
-        text = text_template % (
-            price['BTC_USD'], price['BTC_CNY'],
-            price['LTC_BTC'], price['LTC_CNY'],
-            price['USD_CNY'], price['JPY_CNY'],
-            price['ZEC_BTC'],
-            float(price['ZEC_BTC']) * float(price['BTC_USD']),
-            price['XMR_BTC'],
-            float(price['XMR_BTC']) * float(price['BTC_USD'])
-        )
+        try:
+            price = price_api.getmany((
+                'BTC_USD', 'BTC_CNY', 'LTC_BTC', 'LTC_CNY',
+                'USD_CNY', 'JPY_CNY', 'ZEC_BTC', 'XMR_BTC'))
+            text = text_template % (
+                price['BTC_USD'], price['BTC_CNY'],
+                price['LTC_BTC'], price['LTC_CNY'],
+                price['USD_CNY'], price['JPY_CNY'],
+                price['ZEC_BTC'],
+                float(price['ZEC_BTC']) * float(price['BTC_USD']),
+                price['XMR_BTC'],
+                float(price['XMR_BTC']) * float(price['BTC_USD'])
+            )
+        except Exception:
+            logging.exception('Failed command: ' + msgtext)
+            text = 'Failed to fetch data. Please try again later.'
         cli.sendMessage(chat_id=msg['chat']['id'], text=text,
                         parse_mode='Markdown', disable_web_page_preview=True)
         logging.info('query: ' + re_mdlink.sub(r'\1', text.replace('\n', ' ')))
@@ -257,6 +262,9 @@ def message_handler(cli, msg):
             ), parse_mode='Markdown', disable_web_page_preview=True)
         except KeyError:
             cli.sendMessage(chat_id=msg['chat']['id'], text="We don't have data source for %s." % expr)
+        except Exception:
+            logging.exception('Failed command: ' + msgtext)
+            cli.sendMessage(chat_id=msg['chat']['id'], text="Failed to fetch data. Please try again later.")
     elif cmd == 'start':
         return
 
