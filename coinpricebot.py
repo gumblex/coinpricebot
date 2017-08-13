@@ -235,7 +235,7 @@ def message_handler(cli, msg):
         try:
             price = price_api.getmany((
                 'BTC_USD', 'BTC_CNY', 'LTC_BTC', 'LTC_CNY',
-                'USD_CNY', 'JPY_CNY', 'ZEC_BTC', 'XMR_BTC'))
+                'USD_CNY', 'JPY_CNY', 'ETH_BTC', 'XMR_BTC'))
             text = text_template % (
                 price['BTC_USD'], price['BTC_CNY'],
                 price['LTC_BTC'], price['LTC_CNY'],
