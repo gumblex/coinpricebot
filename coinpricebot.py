@@ -221,7 +221,7 @@ class CoinPriceAPI:
 text_template = '''[BTCUSD](https://www.coinbase.com/charts)=%s [BTCCNY](https://spot.btcc.com/)=%s
 [LTCBTC](https://poloniex.com/exchange#btc_ltc)=%s [LTCCNY](https://spot.btcc.com/)=%s
 [USDCNY](http://finance.yahoo.com/quote/CNY=X)=%s [JPYCNY](http://finance.yahoo.com/quote/JPYCNY=X)=%s
-[ETHBTC](https://poloniex.com/exchange#btc_zec)=%s ETHUSD=%.4f
+[ETHBTC](https://poloniex.com/exchange#btc_eth)=%s ETHUSD=%.4f
 [XMRBTC](https://poloniex.com/exchange#btc_xmr)=%s XMRUSD=%.4f'''
 
 price_api = CoinPriceAPI(60)
