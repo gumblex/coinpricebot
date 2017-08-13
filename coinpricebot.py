@@ -221,7 +221,7 @@ class CoinPriceAPI:
 text_template = '''[BTCUSD](https://www.coinbase.com/charts)=%s [BTCCNY](https://spot.btcc.com/)=%s
 [LTCBTC](https://poloniex.com/exchange#btc_ltc)=%s [LTCCNY](https://spot.btcc.com/)=%s
 [USDCNY](http://finance.yahoo.com/quote/CNY=X)=%s [JPYCNY](http://finance.yahoo.com/quote/JPYCNY=X)=%s
-[ZECBTC](https://poloniex.com/exchange#btc_zec)=%s ZECUSD=%.4f
+[ETHBTC](https://poloniex.com/exchange#btc_zec)=%s ETHUSD=%.4f
 [XMRBTC](https://poloniex.com/exchange#btc_xmr)=%s XMRUSD=%.4f'''
 
 price_api = CoinPriceAPI(60)
@@ -240,8 +240,8 @@ def message_handler(cli, msg):
                 price['BTC_USD'], price['BTC_CNY'],
                 price['LTC_BTC'], price['LTC_CNY'],
                 price['USD_CNY'], price['JPY_CNY'],
-                price['ZEC_BTC'],
-                float(price['ZEC_BTC']) * float(price['BTC_USD']),
+                price['ETH_BTC'],
+                float(price['ETH_BTC']) * float(price['BTC_USD']),
                 price['XMR_BTC'],
                 float(price['XMR_BTC']) * float(price['BTC_USD'])
             )
