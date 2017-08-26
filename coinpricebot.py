@@ -97,24 +97,22 @@ class TelegramBotClient:
 class CoinPriceAPI:
 
     POLONIEX_MKTS = frozenset((
-        'AMP_BTC', 'ARDR_BTC', 'BBR_BTC', 'BCN_BTC', 'BCY_BTC', 'BELA_BTC',
-        'BITS_BTC', 'BLK_BTC', 'BTCD_BTC', 'BTM_BTC', 'BTS_BTC', 'BURST_BTC',
-        'BTC_C2', 'CLAM_BTC', 'CURE_BTC', 'DASH_BTC', 'DCR_BTC', 'DGB_BTC',
-        'DOGE_BTC', 'BTC_EMC2', 'ETC_BTC', 'ETH_BTC', 'EXP_BTC', 'FCT_BTC',
-        'FLDC_BTC', 'FLO_BTC', 'GAME_BTC', 'GNT_BTC', 'GRC_BTC', 'HUC_BTC',
-        'HZ_BTC', 'IOC_BTC', 'LBC_BTC', 'LSK_BTC', 'LTC_BTC', 'MAID_BTC',
-        'MYR_BTC', 'NAUT_BTC', 'NAV_BTC', 'NEOS_BTC', 'NMC_BTC', 'NOBL_BTC',
-        'NOTE_BTC', 'NSR_BTC', 'NXC_BTC', 'NXT_BTC', 'OMNI_BTC', 'PASC_BTC',
-        'PINK_BTC', 'POT_BTC', 'PPC_BTC', 'QBK_BTC', 'QORA_BTC', 'QTL_BTC',
-        'RADS_BTC', 'RBY_BTC', 'REP_BTC', 'RIC_BTC', 'SBD_BTC', 'SC_BTC',
-        'SDC_BTC', 'SJCX_BTC', 'STEEM_BTC', 'STR_BTC', 'STRAT_BTC', 'SYS_BTC',
-        'UNITY_BTC', 'VIA_BTC', 'VOX_BTC', 'VRC_BTC', 'VTC_BTC', 'XBC_BTC',
-        'XCP_BTC', 'XEM_BTC', 'XMG_BTC', 'XMR_BTC', 'XPM_BTC', 'XRP_BTC',
-        'XVC_BTC', 'ZEC_BTC', 'ETC_ETH', 'GNT_ETH', 'LSK_ETH', 'REP_ETH',
-        'STEEM_ETH', 'ZEC_ETH', 'BTC_USDT', 'DASH_USDT', 'ETC_USDT', 'ETH_USDT',
-        'LTC_USDT', 'NXT_USDT', 'REP_USDT', 'STR_USDT', 'XMR_USDT', 'XRP_USDT',
-        'ZEC_USDT', 'BBR_XMR', 'BCN_XMR', 'BLK_XMR', 'BTCD_XMR', 'DASH_XMR',
-        'LTC_XMR', 'MAID_XMR', 'NXT_XMR', 'QORA_XMR', 'ZEC_XMR',
+        'AMP_BTC', 'ARDR_BTC', 'BCH_BTC', 'BCH_ETH', 'BCH_USDT', 'BCN_BTC',
+        'BCN_XMR', 'BCY_BTC', 'BELA_BTC', 'BLK_BTC', 'BLK_XMR', 'BTCD_BTC',
+        'BTCD_XMR', 'BTC_USDT', 'BTM_BTC', 'BTS_BTC', 'BURST_BTC', 'CLAM_BTC',
+        'DASH_BTC', 'DASH_USDT', 'DASH_XMR', 'DCR_BTC', 'DGB_BTC', 'DOGE_BTC',
+        'EMC2_BTC', 'ETC_BTC', 'ETC_ETH', 'ETC_USDT', 'ETH_BTC', 'ETH_USDT',
+        'EXP_BTC', 'FCT_BTC', 'FLDC_BTC', 'FLO_BTC', 'GAME_BTC', 'GNO_BTC',
+        'GNO_ETH', 'GNT_BTC', 'GNT_ETH', 'GRC_BTC', 'HUC_BTC', 'LBC_BTC',
+        'LSK_BTC', 'LSK_ETH', 'LTC_BTC', 'LTC_USDT', 'LTC_XMR', 'MAID_BTC',
+        'MAID_XMR', 'NAUT_BTC', 'NAV_BTC', 'NEOS_BTC', 'NMC_BTC', 'NOTE_BTC',
+        'NXC_BTC', 'NXT_BTC', 'NXT_USDT', 'NXT_XMR', 'OMNI_BTC', 'PASC_BTC',
+        'PINK_BTC', 'POT_BTC', 'PPC_BTC', 'RADS_BTC', 'REP_BTC', 'REP_ETH',
+        'REP_USDT', 'RIC_BTC', 'SBD_BTC', 'SC_BTC', 'SJCX_BTC', 'STEEM_BTC',
+        'STEEM_ETH', 'STRAT_BTC', 'STR_BTC', 'STR_USDT', 'SYS_BTC', 'VIA_BTC',
+        'VRC_BTC', 'VTC_BTC', 'XBC_BTC', 'XCP_BTC', 'XEM_BTC', 'XMR_BTC',
+        'XMR_USDT', 'XPM_BTC', 'XRP_BTC', 'XRP_USDT', 'XVC_BTC', 'ZEC_BTC',
+        'ZEC_ETH', 'ZEC_USDT', 'ZEC_XMR', 'ZRX_BTC', 'ZRX_ETH'
     ))
 
     COINBASE_MKTS = frozenset('BTC_' + k for k in (
