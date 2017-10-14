@@ -234,8 +234,7 @@ def message_handler(cli, msg):
                 'BTC_USD', 'LTC_BTC',
                 'USD_CNY', 'JPY_CNY', 'ETH_BTC', 'XMR_BTC'))
             text = text_template % (
-                price['BTC_USD'], price['BTC_CNY'],
-                price['LTC_BTC'], price['LTC_CNY'],
+                price['BTC_USD'], price['LTC_BTC'],
                 price['USD_CNY'], price['JPY_CNY'],
                 price['ETH_BTC'],
                 float(price['ETH_BTC']) * float(price['BTC_USD']),
