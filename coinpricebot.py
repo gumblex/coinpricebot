@@ -136,7 +136,7 @@ class CoinPriceAPI:
         'XOF', 'XPD', 'XPF', 'XPT', 'YER', 'ZAR', 'ZMK', 'ZMW', 'ZWL'
     ))
 
-    BTCCHINA_MKTS = frozenset(('BTC_CNY', 'LTC_CNY'))
+    BTCCHINA_MKTS = ()
 
     YAHOO_MKTS = {'USD_CNY': 'USDCNY', 'JPY_CNY': 'JPYCNY'}
 
@@ -216,8 +216,7 @@ class CoinPriceAPI:
     def getmany(self, keys):
         return dict(zip(keys, self.executor.map(self.__getitem__, keys)))
 
-text_template = '''[BTCUSD](https://www.coinbase.com/charts)=%s [BTCCNY](https://spot.btcc.com/)=%s
-[LTCBTC](https://poloniex.com/exchange#btc_ltc)=%s [LTCCNY](https://spot.btcc.com/)=%s
+text_template = '''[BTCUSD](https://www.coinbase.com/charts)=%s [LTCBTC](https://poloniex.com/exchange#btc_ltc)=%s
 [USDCNY](http://finance.yahoo.com/quote/CNY=X)=%s [JPYCNY](http://finance.yahoo.com/quote/JPYCNY=X)=%s
 [ETHBTC](https://poloniex.com/exchange#btc_eth)=%s ETHUSD=%.4f
 [XMRBTC](https://poloniex.com/exchange#btc_xmr)=%s XMRUSD=%.4f'''
