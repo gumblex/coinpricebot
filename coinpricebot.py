@@ -231,7 +231,7 @@ def message_handler(cli, msg):
     elif cmd == 'query' and not expr:
         try:
             price = price_api.getmany((
-                'BTC_USD', 'BTC_CNY', 'LTC_BTC', 'LTC_CNY',
+                'BTC_USD', 'LTC_BTC',
                 'USD_CNY', 'JPY_CNY', 'ETH_BTC', 'XMR_BTC'))
             text = text_template % (
                 price['BTC_USD'], price['BTC_CNY'],
