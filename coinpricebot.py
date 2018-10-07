@@ -88,7 +88,10 @@ class TelegramBotClient:
                     if k == 'update_id':
                         continue
                     elif kwargs.get(k):
-                        kwargs[k](self, v)
+                        try:
+                            kwargs[k](self, v)
+                        except Exception:
+                            logging.exception('Answer query failed.')
             time.sleep(.2)
 
     def __getattr__(self, name):
@@ -217,9 +220,9 @@ class CoinPriceAPI:
         return dict(zip(keys, self.executor.map(self.__getitem__, keys)))
 
 text_template = '''[BTCUSD](https://www.coinbase.com/charts)=%s [LTCBTC](https://poloniex.com/exchange#btc_ltc)=%s
-[USDCNY](http://finance.yahoo.com/quote/CNY=X)=%s [JPYCNY](http://finance.yahoo.com/quote/JPYCNY=X)=%s
 [ETHBTC](https://poloniex.com/exchange#btc_eth)=%s ETHUSD=%.4f
-[XMRBTC](https://poloniex.com/exchange#btc_xmr)=%s XMRUSD=%.4f'''
+[XMRBTC](https://poloniex.com/exchange#btc_xmr)=%s XMRUSD=%.4f
+[BCHBTC](https://poloniex.com/exchange#btc_bch)=%s BCHUSD=%.4f'''
 
 price_api = CoinPriceAPI(60)
 
@@ -232,14 +235,15 @@ def message_handler(cli, msg):
         try:
             price = price_api.getmany((
                 'BTC_USD', 'LTC_BTC',
-                'USD_CNY', 'JPY_CNY', 'ETH_BTC', 'XMR_BTC'))
+                'ETH_BTC', 'XMR_BTC', 'BCH_BTC'))
             text = text_template % (
                 price['BTC_USD'], price['LTC_BTC'],
-                price['USD_CNY'], price['JPY_CNY'],
                 price['ETH_BTC'],
                 float(price['ETH_BTC']) * float(price['BTC_USD']),
                 price['XMR_BTC'],
-                float(price['XMR_BTC']) * float(price['BTC_USD'])
+                float(price['XMR_BTC']) * float(price['BTC_USD']),
+                price['BCH_BTC'],
+                float(price['BCH_BTC']) * float(price['BTC_USD'])
             )
         except Exception:
             logging.exception('Failed command: ' + msgtext)
